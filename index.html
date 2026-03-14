@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff">
+  <title>Smit Patel | AI Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ===================== LOADER ===================== -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <p>Loading Smit's Portfolio...</p>
+  </div>
+
+  <!-- ===================== EXPERIENCE MODAL ===================== -->
+  <div id="expModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-glass" id="expModalInner">
+      <button class="modal-close" id="expModalClose" aria-label="Close">&#x2715;</button>
+      <p class="modal-label" id="expModalLabel"></p>
+      <h2 class="modal-title" id="expModalTitle"></h2>
+      <p class="modal-meta" id="expModalMeta"></p>
+      <div class="modal-divider"></div>
+      <ul class="modal-bullets" id="expModalBullets"></ul>
+    </div>
+  </div>
+
+  <!-- ===================== PROJECT MODAL ===================== -->
+  <div id="projModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-glass" id="projModalInner">
+      <button class="modal-close" id="projModalClose" aria-label="Close">&#x2715;</button>
+      <p class="modal-label" id="projModalLabel"></p>
+      <h2 class="modal-title" id="projModalTitle"></h2>
+      <p class="modal-stack" id="projModalStack"></p>
+      <div class="modal-divider"></div>
+      <ul class="modal-bullets" id="projModalBullets"></ul>
+    </div>
+  </div>
+
+  <section class="video-section">
+
+    <!-- Character Canvas -->
+    <div class="canvas-container">
+      <canvas id="characterCanvas"></canvas>
+    </div>
+
+    <!-- Intro Gate -->
+    <div class="intro-layer" id="introLayer">
+      <h1 id="introName"></h1>
+    </div>
+
+    <!-- ========================================
+    SCENE 1 : Summary + Skills
+    Character RIGHT — panel LEFT, closer in
+    ======================================== -->
+    <div class="scene-content" id="scene1">
+      <div class="scene-panel summary-panel">
+        <p class="label">About My Work</p>
+        <h2>Designing Intelligent Systems</h2>
+        <p class="scene-description">
+          MS in Artificial Intelligence at Saint Louis University. I build
+          user-focused AI applications by combining Machine Learning, Computer
+          Vision, NLP, and modern full-stack technologies — transforming complex
+          data into practical, real-world intelligent solutions.
+        </p>
+        <div class="skills-group">
+          <span class="skill-chip">Python</span>
+          <span class="skill-chip">PyTorch</span>
+          <span class="skill-chip">TensorFlow</span>
+          <span class="skill-chip">FastAPI</span>
+          <span class="skill-chip">React</span>
+          <span class="skill-chip">Computer Vision</span>
+          <span class="skill-chip">NLP</span>
+          <span class="skill-chip">Docker</span>
+          <span class="skill-chip">Next.js</span>
+          <span class="skill-chip">Scikit-learn</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================
+    SCENE 2 : Experience
+    Character LEFT — wall frames RIGHT, clickable
+    ======================================== -->
+    <div class="scene-content" id="scene2">
+      <div class="experience-wall">
+        <p class="label">Professional Experience</p>
+        <h2>Building Real-World AI Systems</h2>
+
+        <div class="wall-frame exp-frame" tabindex="0"
+          data-exp="neuralseek"
+          data-label="Current Role"
+          data-title="NeuralSeek"
+          data-meta="AI Agent Developer · Jan 2026 – Present · Miami, FL (Remote)"
+          data-bullets="Engaged in structured training on LLM-based AI agent systems, prompt engineering, and conversational workflow design as part of a 6+ member global AI team.|Assisting in the design and development of AI agents for task automation, decision support, and natural language interaction across 3–5 real-world use cases.|Working with NLP pipelines, intent detection, and tool orchestration with exposure to scalable agent architectures and deployment workflows.|Collaborating on applied generative AI experiments, contributing to documentation, iterative improvements, and cross-team knowledge sharing.|Contributing to prompt optimization strategies that improve agent response accuracy and reduce hallucination rates in production scenarios.">
+          <h3>NeuralSeek</h3>
+          <p class="experience-meta">AI Agent Developer &nbsp;·&nbsp; Jan 2026 – Present</p>
+          <p class="experience-desc">LLM-powered AI agents, prompt engineering, and scalable generative AI workflows.</p>
+          <span class="frame-cta">Click to expand</span>
+        </div>
+
+        <div class="wall-frame exp-frame" tabindex="0"
+          data-exp="excelerate"
+          data-label="Internship"
+          data-title="Excelerate — SLU"
+          data-meta="AI &amp; Data Intern · Jan 2025 – Apr 2025 · Saint Louis University"
+          data-bullets="Built interactive data dashboards using Python and Matplotlib, enabling real-time KPI monitoring and data-driven business insights for stakeholders.|Supported early-stage AI/ML pilot initiatives by designing ML strategy roadmaps and defining use cases for business transformation across multiple departments.|Contributed to workflow optimization efforts resulting in an estimated 15% improvement in operational efficiency through automated reporting pipelines.|Collaborated with mentors and stakeholders through university-referred programs to translate business problems into structured data-driven solutions.|Designed proof-of-concept ML models to demonstrate feasibility of AI adoption, presenting findings to non-technical business audiences.">
+          <h3>Excelerate</h3>
+          <p class="experience-meta">AI &amp; Data Intern &nbsp;·&nbsp; Jan 2025 – Apr 2025</p>
+          <p class="experience-desc">Python dashboards and ML strategy roadmaps for business transformation.</p>
+          <span class="frame-cta">Click to expand</span>
+        </div>
+
+        <div class="wall-frame exp-frame" tabindex="0"
+          data-exp="applified"
+          data-label="Internship"
+          data-title="Applified"
+          data-meta="Junior Mobile App Developer · Jan 2024 – May 2024 · Rajkot, India"
+          data-bullets="Redesigned Android application UI using Figma and Java, achieving 25% faster load times and a 40% increase in user engagement based on A/B testing results.|Collaborated within Agile development teams to convert wireframes into responsive interfaces, reducing development cycle time by 20%.|Optimized backend API calls and data-handling logic, improving data fetch efficiency by approximately 30%.|Worked alongside product designers and QA engineers to deliver polished, user-tested mobile experiences aligned with client specifications.|Participated in sprint planning, code reviews, and retrospectives, gaining hands-on experience in professional mobile development workflows.">
+          <h3>Applified</h3>
+          <p class="experience-meta">Mobile App Developer &nbsp;·&nbsp; Jan 2024 – May 2024</p>
+          <p class="experience-desc">Android UI redesign, Agile workflows, and backend API optimization.</p>
+          <span class="frame-cta">Click to expand</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================
+    SCENE 3 : Projects
+    Character CENTER — cards LEFT + RIGHT, closer
+    ======================================== -->
+    <div class="scene-content" id="scene3">
+      <div class="project-wall">
+
+        <!-- LEFT -->
+        <div class="project-panel left top" data-project="archalert">
+          <p class="label">Urban AI</p>
+          <h3>ArchAlert</h3>
+          <p>Geospatial urban safety intelligence platform.</p>
+          <button class="view-project-btn" data-project="archalert">View Project</button>
+        </div>
+
+        <div class="project-panel left middle" data-project="explainableai">
+          <p class="label">Computer Vision</p>
+          <h3>Explainable Edge AI</h3>
+          <p>Interpretable CV with Grad-CAM and MobileViT.</p>
+          <button class="view-project-btn" data-project="explainableai">View Project</button>
+        </div>
+
+        <div class="project-panel left bottom" data-project="assistaive">
+          <p class="label">NLP</p>
+          <h3>AssistAIve</h3>
+          <p>NLP-based AI tool recommendation assistant.</p>
+          <button class="view-project-btn" data-project="assistaive">View Project</button>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="project-panel right top" data-project="smartglasses">
+          <p class="label">Wearable AI</p>
+          <h3>Smart Glasses Research</h3>
+          <p>Seamless human-tech connection through wearable AI.</p>
+          <button class="view-project-btn" data-project="smartglasses">View Project</button>
+        </div>
+
+        <div class="project-panel right middle" data-project="intellectmap">
+          <p class="label">Recommendation</p>
+          <h3>IntellectMap</h3>
+          <p>AI talent discovery with geospatial visualization.</p>
+          <button class="view-project-btn" data-project="intellectmap">View Project</button>
+        </div>
+
+        <div class="project-panel right bottom" data-project="emailassistant">
+          <p class="label">Productivity</p>
+          <h3>AI Email Assistant</h3>
+          <p>Context-aware email generation for workflows.</p>
+          <button class="view-project-btn" data-project="emailassistant">View Project</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================
+    SCENE 4 : Achievements
+    Character RIGHT — frames LEFT, no emojis, closer
+    ======================================== -->
+    <div class="scene-content" id="scene4">
+      <div class="achievement-wall">
+        <p class="label">Achievements</p>
+        <h2>Recognized for Innovation</h2>
+
+        <div class="wall-frame ach-frame">
+          <p class="ach-category">Hackathon</p>
+          <h3>HackSLU 2026 Winner</h3>
+          <p>Best in Sustainable Urban Innovation for ArchAlert — geospatial safety platform.</p>
+        </div>
+
+        <div class="wall-frame ach-frame">
+          <p class="ach-category">National Competition</p>
+          <h3>Deming Award — 2nd Place</h3>
+          <p>4th National Conference on SQC &amp; Quality Circle Competition (NCSQCC).</p>
+        </div>
+
+        <div class="wall-frame ach-frame">
+          <p class="ach-category">Quality Circles</p>
+          <h3>Gold Medalist</h3>
+          <p>Winner at Zonal and Regional Quality Circle Contests across consecutive years.</p>
+        </div>
+
+        <div class="wall-frame ach-frame">
+          <p class="ach-category">Science &amp; Engineering</p>
+          <h3>Regional Science Fair Wins</h3>
+          <p>Multiple honors across regional science, math, and engineering competitions.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================
+    SCENE 5 : Connect
+    Character LEFT — panel RIGHT
+    ======================================== -->
+    <div class="scene-content" id="scene5">
+      <div class="scene-panel connect-panel">
+        <p class="label">Let's Connect</p>
+        <h2>Let's Build Intelligent Systems Together</h2>
+        <p class="scene-description">
+          Interested in collaborating, building AI solutions, or discussing
+          opportunities? Reach out and let's create something meaningful.
+        </p>
+        <form class="connect-form" id="connectForm">
+          <input type="text" name="name" placeholder="Your Name" autocomplete="off" />
+          <input type="email" name="email" placeholder="Your Email" autocomplete="off" />
+          <textarea name="message" rows="4" placeholder="Your Message"></textarea>
+          <button type="submit" class="connect-btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
