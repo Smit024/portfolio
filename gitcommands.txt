@@ -1,0 +1,14 @@
+DONT KEEP INVERTED COMMAS ("")
+
+
+git clone "url"
+
+git checkout -b "branch name"   (creates new branch)
+
+git status     (Janva mate su badalyu)
+
+git add .       (stage changes, Space before dot )
+
+git commit -m "Commit message"      (Keep "")
+
+git puch -u origin "Branch name"
