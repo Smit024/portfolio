@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#eef0f4">
+  <meta name="description" content="Smit Patel — AI Engineer. MS in Artificial Intelligence at Saint Louis University. Building intelligent systems with ML, Computer Vision, and NLP.">
   <title>Smit Patel | AI Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -15,58 +16,108 @@
   <!-- ===================== LOADER ===================== -->
   <div id="loader">
     <div class="spinner"></div>
-    <p>Loading Smit's Portfolio...</p>
+    <p>Loading Portfolio...</p>
+  </div>
+
+  <!-- ===================== FLOATING NAV ===================== -->
+  <nav class="top-nav" id="topNav" aria-label="External links">
+    <a href="https://www.linkedin.com/in/smit024" target="_blank" rel="noopener" class="nav-btn" aria-label="LinkedIn">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      <span class="nav-label">LinkedIn</span>
+    </a>
+    <a href="https://github.com/smit-patel" target="_blank" rel="noopener" class="nav-btn" aria-label="GitHub">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      <span class="nav-label">GitHub</span>
+    </a>
+    <button class="nav-btn nav-btn--resume" aria-label="View Resume" id="resumeNavBtn">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span class="nav-label">Resume</span>
+    </button>
+  </nav>
+
+  <!-- ===================== RESUME MODAL ===================== -->
+  <div id="resumeModal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-glass resume-modal-glass">
+      <button class="modal-close" aria-label="Close">&#x2715;</button>
+      <div class="resume-modal-header">
+        <h2 class="modal-title">Resume</h2>
+        <a href="Resume.pdf" download class="resume-download-btn" aria-label="Download Resume">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+      <div class="resume-embed-wrapper">
+        <iframe src="" class="resume-iframe" title="Resume PDF" id="resumeIframe"></iframe>
+      </div>
+    </div>
   </div>
 
   <!-- ===================== EXPERIENCE MODAL ===================== -->
-  <div id="expModal" class="modal-overlay" aria-hidden="true">
-    <div class="modal-glass" id="expModalInner">
-      <button class="modal-close" id="expModalClose" aria-label="Close">&#x2715;</button>
-      <p class="modal-label" id="expModalLabel"></p>
-      <h2 class="modal-title" id="expModalTitle"></h2>
-      <p class="modal-meta" id="expModalMeta"></p>
+  <div id="expModal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-glass">
+      <button class="modal-close" aria-label="Close">&#x2715;</button>
+      <p class="modal-label modal-accent" data-field="label"></p>
+      <h2 class="modal-title" data-field="title"></h2>
+      <p class="modal-meta modal-accent" data-field="meta"></p>
       <div class="modal-divider"></div>
-      <ul class="modal-bullets" id="expModalBullets"></ul>
+      <ul class="modal-bullets" data-field="bullets"></ul>
     </div>
   </div>
 
   <!-- ===================== PROJECT MODAL ===================== -->
-  <div id="projModal" class="modal-overlay" aria-hidden="true">
-    <div class="modal-glass" id="projModalInner">
-      <button class="modal-close" id="projModalClose" aria-label="Close">&#x2715;</button>
-      <p class="modal-label" id="projModalLabel"></p>
-      <h2 class="modal-title" id="projModalTitle"></h2>
-      <p class="modal-stack" id="projModalStack"></p>
+  <div id="projModal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-glass">
+      <button class="modal-close" aria-label="Close">&#x2715;</button>
+      <p class="modal-label modal-accent" data-field="label"></p>
+      <h2 class="modal-title" data-field="title"></h2>
+      <p class="modal-stack modal-accent" data-field="stack"></p>
       <div class="modal-divider"></div>
-      <ul class="modal-bullets" id="projModalBullets"></ul>
+      <ul class="modal-bullets" data-field="bullets"></ul>
     </div>
   </div>
 
-  <section class="video-section">
+  <!-- ===================== ACHIEVEMENT MODAL ===================== -->
+  <div id="achModal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-glass">
+      <button class="modal-close" aria-label="Close">&#x2715;</button>
+      <p class="modal-label modal-accent" data-field="label"></p>
+      <h2 class="modal-title" data-field="title"></h2>
+      <div class="modal-divider"></div>
+      <ul class="modal-bullets" data-field="bullets"></ul>
+    </div>
+  </div>
 
-    <!-- Character Canvas -->
+  <!-- ===================== SCENE PROGRESS DOTS ===================== -->
+  <div class="scene-dots" id="sceneDots" aria-label="Scene navigation">
+    <button class="dot active" data-scene="0" aria-label="About"></button>
+    <button class="dot" data-scene="1" aria-label="Experience"></button>
+    <button class="dot" data-scene="2" aria-label="Projects"></button>
+    <button class="dot" data-scene="3" aria-label="Achievements"></button>
+    <button class="dot" data-scene="4" aria-label="Contact"></button>
+  </div>
+  <div class="scene-label"><span id="sceneLabelText">About</span></div>
+
+  <!-- ===================== DESKTOP: canvas + fixed scenes ===================== -->
+  <section class="video-section" id="desktopSection">
+
     <div class="canvas-container">
       <canvas id="characterCanvas"></canvas>
     </div>
 
-    <!-- Intro Gate -->
     <div class="intro-layer" id="introLayer">
       <h1 id="introName"></h1>
     </div>
 
-    <!-- ========================================
-    SCENE 1 : Summary + Skills
-    Character RIGHT — panel LEFT, closer in
-    ======================================== -->
+    <!-- SCENE 1: About -->
     <div class="scene-content" id="scene1">
       <div class="scene-panel summary-panel">
         <p class="label">About My Work</p>
         <h2>Designing Intelligent Systems</h2>
         <p class="scene-description">
           MS in Artificial Intelligence at Saint Louis University. I build
-          user-focused AI applications by combining Machine Learning, Computer
-          Vision, NLP, and modern full-stack technologies — transforming complex
-          data into practical, real-world intelligent solutions.
+          user-focused AI applications combining Machine Learning, Computer
+          Vision, NLP, and full-stack technologies — transforming complex data
+          into practical, real-world intelligent solutions.
         </p>
         <div class="skills-group">
           <span class="skill-chip">Python</span>
@@ -83,146 +134,138 @@
       </div>
     </div>
 
-    <!-- ========================================
-    SCENE 2 : Experience
-    Character LEFT — wall frames RIGHT, clickable
-    ======================================== -->
+    <!-- SCENE 2: Experience -->
     <div class="scene-content" id="scene2">
       <div class="experience-wall">
         <p class="label">Professional Experience</p>
         <h2>Building Real-World AI Systems</h2>
 
         <div class="wall-frame exp-frame" tabindex="0"
-          data-exp="neuralseek"
+          data-accent="#6366f1"
+          data-bg="linear-gradient(135deg,rgba(99,102,241,0.13) 0%,rgba(255,255,255,0.84) 100%)"
           data-label="Current Role"
           data-title="NeuralSeek"
-          data-meta="AI Agent Developer · Jan 2026 – Present · Miami, FL (Remote)"
+          data-meta="AI Agent Developer &nbsp;·&nbsp; Jan 2026 – Present &nbsp;·&nbsp; Miami, FL (Remote)"
           data-bullets="Engaged in structured training on LLM-based AI agent systems, prompt engineering, and conversational workflow design as part of a 6+ member global AI team.|Assisting in the design and development of AI agents for task automation, decision support, and natural language interaction across 3–5 real-world use cases.|Working with NLP pipelines, intent detection, and tool orchestration with exposure to scalable agent architectures and deployment workflows.|Collaborating on applied generative AI experiments, contributing to documentation, iterative improvements, and cross-team knowledge sharing.|Contributing to prompt optimization strategies that improve agent response accuracy and reduce hallucination rates in production scenarios.">
           <h3>NeuralSeek</h3>
           <p class="experience-meta">AI Agent Developer &nbsp;·&nbsp; Jan 2026 – Present</p>
-          <p class="experience-desc">LLM-powered AI agents, prompt engineering, and scalable generative AI workflows.</p>
-          <span class="frame-cta">Click to expand</span>
+          <p class="experience-desc">LLM-powered AI agents, prompt engineering, generative AI workflows.</p>
+          <span class="frame-cta">Click to expand &rarr;</span>
         </div>
 
         <div class="wall-frame exp-frame" tabindex="0"
-          data-exp="excelerate"
+          data-accent="#0ea5e9"
+          data-bg="linear-gradient(135deg,rgba(14,165,233,0.13) 0%,rgba(255,255,255,0.84) 100%)"
           data-label="Internship"
           data-title="Excelerate — SLU"
-          data-meta="AI &amp; Data Intern · Jan 2025 – Apr 2025 · Saint Louis University"
-          data-bullets="Built interactive data dashboards using Python and Matplotlib, enabling real-time KPI monitoring and data-driven business insights for stakeholders.|Supported early-stage AI/ML pilot initiatives by designing ML strategy roadmaps and defining use cases for business transformation across multiple departments.|Contributed to workflow optimization efforts resulting in an estimated 15% improvement in operational efficiency through automated reporting pipelines.|Collaborated with mentors and stakeholders through university-referred programs to translate business problems into structured data-driven solutions.|Designed proof-of-concept ML models to demonstrate feasibility of AI adoption, presenting findings to non-technical business audiences.">
+          data-meta="AI &amp; Data Intern &nbsp;·&nbsp; Jan 2025 – Apr 2025 &nbsp;·&nbsp; Saint Louis University"
+          data-bullets="Built interactive data dashboards using Python and Matplotlib, enabling real-time KPI monitoring and data-driven business insights for multiple stakeholders.|Supported early-stage AI/ML pilot initiatives by designing ML strategy roadmaps and defining use cases for business transformation across departments.|Contributed to workflow optimization efforts resulting in an estimated 15% improvement in operational efficiency through automated reporting pipelines.|Collaborated with mentors through university-referred programs to translate business problems into structured data-driven solutions.|Designed proof-of-concept ML models to demonstrate feasibility of AI adoption, presenting findings to non-technical business audiences.">
           <h3>Excelerate</h3>
           <p class="experience-meta">AI &amp; Data Intern &nbsp;·&nbsp; Jan 2025 – Apr 2025</p>
-          <p class="experience-desc">Python dashboards and ML strategy roadmaps for business transformation.</p>
-          <span class="frame-cta">Click to expand</span>
+          <p class="experience-desc">Python dashboards, ML roadmaps, 15% efficiency improvement.</p>
+          <span class="frame-cta">Click to expand &rarr;</span>
         </div>
 
         <div class="wall-frame exp-frame" tabindex="0"
-          data-exp="applified"
+          data-accent="#10b981"
+          data-bg="linear-gradient(135deg,rgba(16,185,129,0.13) 0%,rgba(255,255,255,0.84) 100%)"
           data-label="Internship"
           data-title="Applified"
-          data-meta="Junior Mobile App Developer · Jan 2024 – May 2024 · Rajkot, India"
+          data-meta="Junior Mobile App Developer &nbsp;·&nbsp; Jan 2024 – May 2024 &nbsp;·&nbsp; Rajkot, India"
           data-bullets="Redesigned Android application UI using Figma and Java, achieving 25% faster load times and a 40% increase in user engagement based on A/B testing results.|Collaborated within Agile development teams to convert wireframes into responsive interfaces, reducing development cycle time by 20%.|Optimized backend API calls and data-handling logic, improving data fetch efficiency by approximately 30%.|Worked alongside product designers and QA engineers to deliver polished, user-tested mobile experiences aligned with client specifications.|Participated in sprint planning, code reviews, and retrospectives, gaining hands-on experience in professional mobile development workflows.">
           <h3>Applified</h3>
           <p class="experience-meta">Mobile App Developer &nbsp;·&nbsp; Jan 2024 – May 2024</p>
-          <p class="experience-desc">Android UI redesign, Agile workflows, and backend API optimization.</p>
-          <span class="frame-cta">Click to expand</span>
+          <p class="experience-desc">Android UI, Agile workflows, 25% faster load, 30% API efficiency.</p>
+          <span class="frame-cta">Click to expand &rarr;</span>
         </div>
       </div>
     </div>
 
-    <!-- ========================================
-    SCENE 3 : Projects
-    Character CENTER — cards LEFT + RIGHT, closer
-    ======================================== -->
+    <!-- SCENE 3: Projects -->
     <div class="scene-content" id="scene3">
       <div class="project-wall">
-
-        <!-- LEFT -->
         <div class="project-panel left top" data-project="archalert">
-          <p class="label">Urban AI</p>
-          <h3>ArchAlert</h3>
+          <p class="label">ArchAlert</p>
           <p>Geospatial urban safety intelligence platform.</p>
           <button class="view-project-btn" data-project="archalert">View Project</button>
         </div>
-
         <div class="project-panel left middle" data-project="explainableai">
-          <p class="label">Computer Vision</p>
-          <h3>Explainable Edge AI</h3>
+          <p class="label">Explainable Edge AI</p>
           <p>Interpretable CV with Grad-CAM and MobileViT.</p>
           <button class="view-project-btn" data-project="explainableai">View Project</button>
         </div>
-
         <div class="project-panel left bottom" data-project="assistaive">
-          <p class="label">NLP</p>
-          <h3>AssistAIve</h3>
-          <p>NLP-based AI tool recommendation assistant.</p>
+          <p class="label">AssistAIve</p>
+          <p>NLP based AI tool recommendation assistant.</p>
           <button class="view-project-btn" data-project="assistaive">View Project</button>
         </div>
-
-        <!-- RIGHT -->
         <div class="project-panel right top" data-project="smartglasses">
-          <p class="label">Wearable AI</p>
-          <h3>Smart Glasses Research</h3>
-          <p>Seamless human-tech connection through wearable AI.</p>
+          <p class="label">Smart Glasses</p>
+          <p>Seamless human-tech connection via wearable AI.</p>
           <button class="view-project-btn" data-project="smartglasses">View Project</button>
         </div>
-
         <div class="project-panel right middle" data-project="intellectmap">
-          <p class="label">Recommendation</p>
-          <h3>IntellectMap</h3>
+          <p class="label">IntellectMap</p>
           <p>AI talent discovery with geospatial visualization.</p>
           <button class="view-project-btn" data-project="intellectmap">View Project</button>
         </div>
-
         <div class="project-panel right bottom" data-project="emailassistant">
-          <p class="label">Productivity</p>
-          <h3>AI Email Assistant</h3>
+          <p class="label">AI Email Assistant</p>
           <p>Context-aware email generation for workflows.</p>
           <button class="view-project-btn" data-project="emailassistant">View Project</button>
         </div>
-
       </div>
     </div>
 
-    <!-- ========================================
-    SCENE 4 : Achievements
-    Character RIGHT — frames LEFT, no emojis, closer
-    ======================================== -->
+    <!-- SCENE 4: Achievements -->
     <div class="scene-content" id="scene4">
       <div class="achievement-wall">
         <p class="label">Achievements</p>
         <h2>Recognized for Innovation</h2>
-
-        <div class="wall-frame ach-frame">
+        <div class="wall-frame ach-frame" tabindex="0"
+          data-accent="#6366f1"
+          data-bg="linear-gradient(135deg,rgba(99,102,241,0.10) 0%,rgba(255,255,255,0.86) 100%)"
+          data-label="Hackathon" data-title="HackSLU 2026 Winner"
+          data-bullets="Won Best in Sustainable Urban Innovation at HackSLU 2026 for ArchAlert, a geospatial safety intelligence platform.|Built a full-stack solution using Next.js, FastAPI, React, and Leaflet in under 36 hours with a 4-member team.|Implemented spatial clustering, heatmap rendering, and LLM-assisted narrative summaries for real-time urban awareness.|Deployed production-ready prototype via Docker, Hugging Face Spaces, and Vercel with CI-based workflows.">
           <p class="ach-category">Hackathon</p>
           <h3>HackSLU 2026 Winner</h3>
-          <p>Best in Sustainable Urban Innovation for ArchAlert — geospatial safety platform.</p>
+          <p>Best in Sustainable Urban Innovation for ArchAlert geospatial safety platform.</p>
+          <span class="frame-cta">Click to expand &rarr;</span>
         </div>
-
-        <div class="wall-frame ach-frame">
+        <div class="wall-frame ach-frame" tabindex="0"
+          data-accent="#0ea5e9"
+          data-bg="linear-gradient(135deg,rgba(14,165,233,0.10) 0%,rgba(255,255,255,0.86) 100%)"
+          data-label="National Competition" data-title="Deming Award — 2nd Place"
+          data-bullets="Secured 2nd place at the 4th National Conference on Statistical Quality Control and Quality Circle Competition (NCSQCC).|Presented data-driven quality improvement methodologies to a panel of national-level industry judges.|Competed against teams from universities and organizations across India in rigorous multi-round evaluation.|Demonstrated leadership in team coordination, research analysis, and professional presentation delivery.">
           <p class="ach-category">National Competition</p>
           <h3>Deming Award — 2nd Place</h3>
           <p>4th National Conference on SQC &amp; Quality Circle Competition (NCSQCC).</p>
+          <span class="frame-cta">Click to expand &rarr;</span>
         </div>
-
-        <div class="wall-frame ach-frame">
+        <div class="wall-frame ach-frame" tabindex="0"
+          data-accent="#10b981"
+          data-bg="linear-gradient(135deg,rgba(16,185,129,0.10) 0%,rgba(255,255,255,0.86) 100%)"
+          data-label="Quality Circles" data-title="Gold Medalist"
+          data-bullets="Won Gold at both Zonal and Regional Quality Circle Contests in consecutive years.|Led a quality improvement team that identified process bottlenecks and proposed measurable solutions.|Applied statistical tools including Pareto analysis, fishbone diagrams, and control charts to real-world quality problems.|Recognized for innovative problem-solving approach and clear, data-backed presentation style.">
           <p class="ach-category">Quality Circles</p>
           <h3>Gold Medalist</h3>
           <p>Winner at Zonal and Regional Quality Circle Contests across consecutive years.</p>
+          <span class="frame-cta">Click to expand &rarr;</span>
         </div>
-
-        <div class="wall-frame ach-frame">
+        <div class="wall-frame ach-frame" tabindex="0"
+          data-accent="#f59e0b"
+          data-bg="linear-gradient(135deg,rgba(245,158,11,0.10) 0%,rgba(255,255,255,0.86) 100%)"
+          data-label="Science &amp; Engineering" data-title="Regional Science Fair Wins"
+          data-bullets="Won multiple awards across regional science, mathematics, and engineering competitions throughout academic career.|Developed innovative project prototypes demonstrating applied scientific thinking and engineering problem-solving.|Recognized for excellence in experimental design, hypothesis testing, and clear communication of technical findings.|Built a foundation in research methodology and presentation skills that carried into university-level AI research.">
           <p class="ach-category">Science &amp; Engineering</p>
           <h3>Regional Science Fair Wins</h3>
           <p>Multiple honors across regional science, math, and engineering competitions.</p>
+          <span class="frame-cta">Click to expand &rarr;</span>
         </div>
       </div>
     </div>
 
-    <!-- ========================================
-    SCENE 5 : Connect
-    Character LEFT — panel RIGHT
-    ======================================== -->
+    <!-- SCENE 5: Contact -->
     <div class="scene-content" id="scene5">
       <div class="scene-panel connect-panel">
         <p class="label">Let's Connect</p>
@@ -231,10 +274,10 @@
           Interested in collaborating, building AI solutions, or discussing
           opportunities? Reach out and let's create something meaningful.
         </p>
-        <form class="connect-form" id="connectForm">
-          <input type="text" name="name" placeholder="Your Name" autocomplete="off" />
-          <input type="email" name="email" placeholder="Your Email" autocomplete="off" />
-          <textarea name="message" rows="4" placeholder="Your Message"></textarea>
+        <form class="connect-form" id="connectFormDesktop">
+          <input type="text" name="name" placeholder="Your Name" required autocomplete="name" />
+          <input type="email" name="email" placeholder="Your Email" required autocomplete="email" />
+          <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
           <button type="submit" class="connect-btn">Send Message</button>
         </form>
       </div>
@@ -242,8 +285,135 @@
 
   </section>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- ===================== MOBILE: scroll layout with character ===================== -->
+  <main class="mobile-layout" id="mobileLayout" aria-label="Portfolio">
+
+    <!-- Mobile Character Canvas -->
+    <div class="mob-canvas-wrap" id="mobCanvasWrap">
+      <canvas id="mobCharacterCanvas"></canvas>
+    </div>
+
+    <!-- Mobile Hero -->
+    <section class="mob-hero" id="mobHero">
+      <div class="mob-hero-bg"></div>
+      <div class="mob-hero-content">
+        <p class="mob-eyebrow">AI Engineer</p>
+        <h1 class="mob-name">Smit Patel</h1>
+        <p class="mob-tagline">MS in Artificial Intelligence &middot; Saint Louis University</p>
+        <p class="mob-bio">Building intelligent applications with ML, Computer Vision, NLP, and full-stack technologies. Transforming complex data into real-world solutions.</p>
+        <div class="mob-hero-links">
+          <a href="https://www.linkedin.com/in/smit024" target="_blank" rel="noopener" class="mob-link-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/smit-patel" target="_blank" rel="noopener" class="mob-link-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            GitHub
+          </a>
+          <a href="Resume.pdf" download class="mob-link-btn mob-link-btn--accent">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Resume
+          </a>
+        </div>
+        <div class="skills-group mob-skills">
+          <span class="skill-chip">Python</span><span class="skill-chip">PyTorch</span>
+          <span class="skill-chip">TensorFlow</span><span class="skill-chip">FastAPI</span>
+          <span class="skill-chip">React</span><span class="skill-chip">Computer Vision</span>
+          <span class="skill-chip">NLP</span><span class="skill-chip">Docker</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile Experience -->
+    <section class="mob-section" id="mobExperience">
+      <div class="mob-section-header">
+        <p class="label">Professional Experience</p>
+        <h2>Building Real-World AI Systems</h2>
+      </div>
+      <div class="mob-cards">
+        <div class="mob-exp-card" tabindex="0" data-accent="#6366f1" data-bg="linear-gradient(135deg,rgba(99,102,241,0.13) 0%,rgba(255,255,255,0.84) 100%)" data-label="Current Role" data-title="NeuralSeek" data-meta="AI Agent Developer &middot; Jan 2026 – Present &middot; Miami, FL (Remote)" data-bullets="Engaged in structured training on LLM-based AI agent systems, prompt engineering, and conversational workflow design as part of a 6+ member global AI team.|Assisting in the design and development of AI agents for task automation, decision support, and natural language interaction across 3–5 real-world use cases.|Working with NLP pipelines, intent detection, and tool orchestration with exposure to scalable agent architectures and deployment workflows.|Collaborating on applied generative AI experiments, contributing to documentation, iterative improvements, and cross-team knowledge sharing.|Contributing to prompt optimization strategies that improve agent response accuracy and reduce hallucination rates in production scenarios.">
+          <div class="mob-card-accent" style="background:#6366f1"></div>
+          <h3>NeuralSeek</h3>
+          <p class="experience-meta">AI Agent Developer &middot; Jan 2026 – Present</p>
+          <p class="experience-desc">LLM-powered AI agents, prompt engineering, generative AI workflows.</p>
+          <span class="mob-tap-hint">Tap to expand</span>
+        </div>
+        <div class="mob-exp-card" tabindex="0" data-accent="#0ea5e9" data-bg="linear-gradient(135deg,rgba(14,165,233,0.13) 0%,rgba(255,255,255,0.84) 100%)" data-label="Internship" data-title="Excelerate — SLU" data-meta="AI &amp; Data Intern &middot; Jan 2025 – Apr 2025 &middot; Saint Louis University" data-bullets="Built interactive data dashboards using Python and Matplotlib, enabling real-time KPI monitoring and data-driven business insights for multiple stakeholders.|Supported early-stage AI/ML pilot initiatives by designing ML strategy roadmaps and defining use cases for business transformation across departments.|Contributed to workflow optimization efforts resulting in an estimated 15% improvement in operational efficiency.|Collaborated with mentors through university-referred programs to translate business problems into structured data-driven solutions.|Designed proof-of-concept ML models to demonstrate feasibility of AI adoption, presenting findings to non-technical business audiences.">
+          <div class="mob-card-accent" style="background:#0ea5e9"></div>
+          <h3>Excelerate</h3>
+          <p class="experience-meta">AI &amp; Data Intern &middot; Jan 2025 – Apr 2025</p>
+          <p class="experience-desc">Python dashboards, ML roadmaps, 15% efficiency improvement.</p>
+          <span class="mob-tap-hint">Tap to expand</span>
+        </div>
+        <div class="mob-exp-card" tabindex="0" data-accent="#10b981" data-bg="linear-gradient(135deg,rgba(16,185,129,0.13) 0%,rgba(255,255,255,0.84) 100%)" data-label="Internship" data-title="Applified" data-meta="Junior Mobile App Developer &middot; Jan 2024 – May 2024 &middot; Rajkot, India" data-bullets="Redesigned Android UI using Figma and Java, achieving 25% faster load times and a 40% increase in user engagement based on A/B testing results.|Collaborated within Agile development teams to convert wireframes into responsive interfaces, reducing cycle time by 20%.|Optimized backend API calls, improving data fetch efficiency by approximately 30%.|Worked alongside product designers and QA engineers to deliver polished, user-tested mobile experiences.|Participated in sprint planning, code reviews, and retrospectives in a professional mobile development workflow.">
+          <div class="mob-card-accent" style="background:#10b981"></div>
+          <h3>Applified</h3>
+          <p class="experience-meta">Mobile App Developer &middot; Jan 2024 – May 2024</p>
+          <p class="experience-desc">Android UI, Agile workflows, 25% faster load, 30% API efficiency.</p>
+          <span class="mob-tap-hint">Tap to expand</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile Projects -->
+    <section class="mob-section" id="mobProjects">
+      <div class="mob-section-header">
+        <p class="label">Selected Projects</p>
+        <h2>AI Platforms &amp; Research</h2>
+      </div>
+      <div class="mob-proj-grid">
+        <div class="mob-proj-card" style="--accent:#6366f1"><div class="mob-card-accent" style="background:#6366f1"></div><p class="label">Urban AI</p><h3>ArchAlert</h3><p>Geospatial urban safety intelligence platform.</p><button class="view-project-btn mob-proj-btn" data-project="archalert">View Project</button></div>
+        <div class="mob-proj-card" style="--accent:#0ea5e9"><div class="mob-card-accent" style="background:#0ea5e9"></div><p class="label">Computer Vision</p><h3>Explainable Edge AI</h3><p>Interpretable CV with Grad-CAM and MobileViT.</p><button class="view-project-btn mob-proj-btn" data-project="explainableai">View Project</button></div>
+        <div class="mob-proj-card" style="--accent:#10b981"><div class="mob-card-accent" style="background:#10b981"></div><p class="label">NLP</p><h3>AssistAIve</h3><p>NLP-based AI tool recommendation assistant.</p><button class="view-project-btn mob-proj-btn" data-project="assistaive">View Project</button></div>
+        <div class="mob-proj-card" style="--accent:#f59e0b"><div class="mob-card-accent" style="background:#f59e0b"></div><p class="label">Wearable AI</p><h3>Smart Glasses</h3><p>Seamless human-tech connection via wearable AI.</p><button class="view-project-btn mob-proj-btn" data-project="smartglasses">View Project</button></div>
+        <div class="mob-proj-card" style="--accent:#ec4899"><div class="mob-card-accent" style="background:#ec4899"></div><p class="label">Recommendation</p><h3>IntellectMap</h3><p>AI talent discovery with geospatial visualization.</p><button class="view-project-btn mob-proj-btn" data-project="intellectmap">View Project</button></div>
+        <div class="mob-proj-card" style="--accent:#8b5cf6"><div class="mob-card-accent" style="background:#8b5cf6"></div><p class="label">Productivity</p><h3>AI Email Assistant</h3><p>Context-aware email generation for workflows.</p><button class="view-project-btn mob-proj-btn" data-project="emailassistant">View Project</button></div>
+      </div>
+    </section>
+
+    <!-- Mobile Achievements -->
+    <section class="mob-section" id="mobAchievements">
+      <div class="mob-section-header">
+        <p class="label">Achievements</p>
+        <h2>Recognized for Innovation</h2>
+      </div>
+      <div class="mob-cards">
+        <div class="mob-ach-card" tabindex="0" data-accent="#6366f1" data-bg="linear-gradient(135deg,rgba(99,102,241,0.10) 0%,rgba(255,255,255,0.86) 100%)" data-label="Hackathon" data-title="HackSLU 2026 Winner" data-bullets="Won Best in Sustainable Urban Innovation at HackSLU 2026 for ArchAlert.|Built a full-stack solution using Next.js, FastAPI, React, and Leaflet in under 36 hours.|Implemented spatial clustering, heatmap rendering, and LLM-assisted narrative summaries.|Deployed production-ready prototype via Docker, Hugging Face Spaces, and Vercel.">
+          <p class="ach-category">Hackathon</p><h3>HackSLU 2026 Winner</h3><p>Best in Sustainable Urban Innovation for ArchAlert.</p><span class="mob-tap-hint">Tap to expand</span>
+        </div>
+        <div class="mob-ach-card" tabindex="0" data-accent="#0ea5e9" data-bg="linear-gradient(135deg,rgba(14,165,233,0.10) 0%,rgba(255,255,255,0.86) 100%)" data-label="National Competition" data-title="Deming Award — 2nd Place" data-bullets="Secured 2nd place at the 4th NCSQCC.|Presented quality improvement methodologies to national-level judges.|Competed against teams from universities across India.|Demonstrated leadership in research analysis and professional presentation.">
+          <p class="ach-category">National Competition</p><h3>Deming Award — 2nd Place</h3><p>4th NCSQCC Quality Circle Competition.</p><span class="mob-tap-hint">Tap to expand</span>
+        </div>
+        <div class="mob-ach-card" tabindex="0" data-accent="#10b981" data-bg="linear-gradient(135deg,rgba(16,185,129,0.10) 0%,rgba(255,255,255,0.86) 100%)" data-label="Quality Circles" data-title="Gold Medalist" data-bullets="Won Gold at Zonal and Regional Quality Circle Contests in consecutive years.|Led quality improvement teams identifying process bottlenecks.|Applied Pareto analysis, fishbone diagrams, and control charts.|Recognized for innovative problem-solving and data-backed presentations.">
+          <p class="ach-category">Quality Circles</p><h3>Gold Medalist</h3><p>Winner at Zonal and Regional QCC.</p><span class="mob-tap-hint">Tap to expand</span>
+        </div>
+        <div class="mob-ach-card" tabindex="0" data-accent="#f59e0b" data-bg="linear-gradient(135deg,rgba(245,158,11,0.10) 0%,rgba(255,255,255,0.86) 100%)" data-label="Science &amp; Engineering" data-title="Regional Science Fair Wins" data-bullets="Won multiple awards across regional science, math, and engineering competitions.|Developed innovative project prototypes with applied scientific thinking.|Recognized for excellence in experimental design and hypothesis testing.|Built a foundation in research methodology that carried into university AI work.">
+          <p class="ach-category">Science &amp; Engineering</p><h3>Regional Science Fair Wins</h3><p>Multiple honors across science and engineering competitions.</p><span class="mob-tap-hint">Tap to expand</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile Contact -->
+    <section class="mob-section mob-contact" id="mobContact">
+      <div class="mob-section-header">
+        <p class="label">Let's Connect</p>
+        <h2>Let's Build Intelligent Systems Together</h2>
+        <p class="scene-description">Interested in collaborating or discussing opportunities? Send a message.</p>
+      </div>
+      <form class="connect-form" id="connectFormMobile">
+        <input type="text" name="name" placeholder="Your Name" required autocomplete="name" />
+        <input type="email" name="email" placeholder="Your Email" required autocomplete="email" />
+        <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+        <button type="submit" class="connect-btn">Send Message</button>
+      </form>
+    </section>
+
+    <footer class="mob-footer">
+      <p>Smit Patel &copy; 2026 &nbsp;&middot;&nbsp; AI Engineer &nbsp;&middot;&nbsp; Saint Louis, MO</p>
+    </footer>
+
+  </main>
+
   <script src="js/script.js"></script>
 </body>
 </html>
