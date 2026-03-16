@@ -1,9 +1,10 @@
 /* =====================================================
    SMIT PATEL PORTFOLIO — styles.css
-   Breakpoints:
-     Desktop  : > 1024px  → canvas animation + fixed scenes
-     Tablet   : 768–1024px → adapted desktop layout, smaller panels
-     Mobile   : < 768px   → scroll layout with character canvas
+   v3 fixes:
+   - Achievement wall pushed below intro name
+   - Mobile sections fade in/out with character visible between
+   - Entire cards clickable (cursor pointer everywhere)
+   - Project panels closer to center
 ===================================================== */
 
 /* =========================
@@ -38,7 +39,6 @@ RESET
 ========================= */
 
 *, *::before, *::after{ margin:0; padding:0; box-sizing:border-box; }
-
 html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 
 body{
@@ -55,8 +55,7 @@ LOADER
 ========================= */
 
 #loader{
-  position:fixed; inset:0;
-  background:var(--bg);
+  position:fixed; inset:0; background:var(--bg);
   display:flex; flex-direction:column;
   justify-content:center; align-items:center;
   z-index:9999;
@@ -135,8 +134,7 @@ SCENE PROGRESS DOTS
 .scene-dots{
   position:fixed; right:18px; top:50%; transform:translateY(-50%);
   z-index:200; display:flex; flex-direction:column; gap:10px;
-  opacity:0; transition:opacity .5s ease;
-  pointer-events:none;
+  opacity:0; transition:opacity .5s ease; pointer-events:none;
 }
 body.nav-visible .scene-dots{ opacity:1; pointer-events:auto; }
 
@@ -144,8 +142,7 @@ body.nav-visible .scene-dots{ opacity:1; pointer-events:auto; }
   width:8px; height:8px; border-radius:50%;
   background:rgba(99,102,241,.25);
   border:none; cursor:pointer; padding:0;
-  transition:all .3s ease;
-  position:relative;
+  transition:all .3s ease; position:relative;
 }
 .dot::after{
   content:attr(aria-label);
@@ -163,7 +160,7 @@ body.nav-visible .scene-dots{ opacity:1; pointer-events:auto; }
 .dot:hover{ background:rgba(99,102,241,.55); }
 
 /* =========================
-SCENE LABEL (bottom center)
+SCENE LABEL
 ========================= */
 
 .scene-label{
@@ -171,8 +168,7 @@ SCENE LABEL (bottom center)
   z-index:200;
   font-family:'Syne',sans-serif; font-size:10px; font-weight:700;
   letter-spacing:.22em; text-transform:uppercase; color:rgba(99,102,241,.6);
-  opacity:0; transition:opacity .5s ease;
-  pointer-events:none;
+  opacity:0; transition:opacity .5s ease; pointer-events:none;
 }
 body.nav-visible .scene-label{ opacity:1; }
 
@@ -180,9 +176,7 @@ body.nav-visible .scene-label{ opacity:1; }
 DESKTOP CANVAS SECTION
 ========================= */
 
-.video-section{
-  position:relative; width:100%; height:500vh;
-}
+.video-section{ position:relative; width:100%; height:500vh; }
 .canvas-container{
   position:fixed; inset:0; z-index:5;
   pointer-events:none; opacity:0; transition:opacity 1s ease;
@@ -230,7 +224,7 @@ SCENE BASE
 }
 
 /* =========================
-TYPOGRAPHY — shared
+TYPOGRAPHY
 ========================= */
 
 .label{
@@ -262,14 +256,12 @@ GLASS BASE
   position:relative; overflow:hidden;
 }
 
-/* Shimmer overlay (::before) */
 .wall-frame::before, .project-panel::before{
   content:''; position:absolute; inset:0; border-radius:20px;
   background:linear-gradient(135deg,rgba(99,102,241,.07) 0%,rgba(168,85,247,.04) 50%,transparent 100%);
   opacity:0; transition:opacity .35s ease; pointer-events:none; z-index:1;
 }
 
-/* Edge strip (::after) */
 .wall-frame::after, .project-panel::after{
   content:''; position:absolute; top:0; width:3px; height:100%;
   opacity:0; transition:opacity .35s ease; pointer-events:none; z-index:2;
@@ -301,7 +293,7 @@ SCENE 1 — Summary
 .summary-panel{ max-width:390px; width:100%; padding:26px 28px; margin-left:4vw; }
 
 /* =========================
-SCENE 2 — Experience, RIGHT wall
+SCENE 2 — Experience (RIGHT wall)
 ========================= */
 
 #scene2{ justify-content:flex-end; align-items:center; padding-right:4vw; }
@@ -311,7 +303,6 @@ SCENE 2 — Experience, RIGHT wall
 
 .wall-frame{ padding:20px 24px; margin-bottom:12px; cursor:pointer; }
 
-/* Experience frames: hinge right */
 .experience-wall .wall-frame{
   transform:perspective(900px) rotateY(-8deg) rotateX(1.5deg);
   transform-origin:right center;
@@ -322,7 +313,7 @@ SCENE 2 — Experience, RIGHT wall
   background:linear-gradient(180deg,var(--indigo),var(--purple),var(--cyan));
 }
 
-/* HOVER: all experience frames */
+/* HOVER on ALL experience frames */
 .experience-wall .wall-frame:hover,
 .experience-wall .wall-frame:focus-visible{
   transform:perspective(900px) rotateY(0deg) rotateX(0deg) translateX(-12px) scale(1.025);
@@ -341,7 +332,7 @@ SCENE 2 — Experience, RIGHT wall
 }
 .experience-desc{ font-size:.8rem; color:var(--muted); line-height:1.6; margin-bottom:6px; }
 
-/* CTA shown on hover for ALL wall frames */
+/* CTA on hover — shown on ALL wall frames */
 .frame-cta{
   display:inline-block; font-size:.7rem; color:var(--indigo);
   font-family:'Syne',sans-serif; font-weight:600;
@@ -352,7 +343,7 @@ SCENE 2 — Experience, RIGHT wall
 .wall-frame:focus-visible .frame-cta{ opacity:1; }
 
 /* =========================
-SCENE 3 — Projects, CLOSER to center + tilted
+SCENE 3 — Projects (closer to center, tilted)
 ========================= */
 
 #scene3{ justify-content:center; align-items:center; }
@@ -365,7 +356,6 @@ SCENE 3 — Projects, CLOSER to center + tilted
 .project-panel.hovered{ z-index:20; }
 .project-panel p{ font-size:.78rem; margin-bottom:12px; line-height:1.55; }
 
-/* LEFT panels — closer to center, tilted */
 .project-panel.left{
   transform:perspective(900px) rotateY(10deg) rotateX(1.5deg);
   transform-origin:left center;
@@ -378,7 +368,6 @@ SCENE 3 — Projects, CLOSER to center + tilted
   background:rgba(255,255,255,.9);
 }
 
-/* RIGHT panels — closer to center, tilted */
 .project-panel.right{
   transform:perspective(900px) rotateY(-10deg) rotateX(1.5deg);
   transform-origin:right center;
@@ -394,7 +383,7 @@ SCENE 3 — Projects, CLOSER to center + tilted
 .project-panel:hover::before{ opacity:1; }
 .project-panel:hover::after{ opacity:1; }
 
-/* POSITIONS — pulled closer to center */
+/* Positions — closer to center */
 .project-panel.left.top    { left:16%;  top:12%; }
 .project-panel.left.middle { left:14%;  top:42%; }
 .project-panel.left.bottom { left:16%;  top:70%; }
@@ -413,11 +402,16 @@ SCENE 3 — Projects, CLOSER to center + tilted
 .project-panel .label{ color:var(--accent,var(--indigo)); }
 
 /* =========================
-SCENE 4 — Achievements, LEFT wall (now clickable)
+SCENE 4 — Achievements (LEFT wall)
+FIX: padding-top to push below "Smit Patel" name in corner
 ========================= */
 
-#scene4{ justify-content:flex-start; align-items:center; padding-left:4vw; }
-.achievement-wall{ display:flex; flex-direction:column; width:370px; max-width:40vw; }
+#scene4{ justify-content:flex-start; align-items:center; padding-left:4vw; padding-top:8vh; }
+.achievement-wall{
+  display:flex; flex-direction:column;
+  width:370px; max-width:40vw;
+  margin-top:40px; /* push content below the intro name in top-left */
+}
 .achievement-wall .label{ margin-bottom:5px; }
 .achievement-wall h2{ margin-bottom:16px; }
 
@@ -456,7 +450,7 @@ SCENE 5 — Contact
 .connect-panel{ max-width:440px; width:100%; padding:28px 30px; }
 
 /* =========================
-CONNECT FORM — shared desktop + mobile
+CONNECT FORM
 ========================= */
 
 .connect-form{ display:flex; flex-direction:column; gap:10px; margin-top:16px; }
@@ -493,6 +487,7 @@ CONNECT FORM — shared desktop + mobile
 }
 .connect-btn:hover{ background:var(--indigo-dark); transform:translateY(-2px); box-shadow:0 10px 28px rgba(99,102,241,.38); }
 .connect-btn:hover::before{ transform:translateX(110%); }
+.connect-btn:disabled{ opacity:.7; cursor:wait; transform:none; }
 
 /* =========================
 VIEW PROJECT BUTTON
@@ -516,7 +511,7 @@ VIEW PROJECT BUTTON
 .view-project-btn:hover::before{ transform:translateX(110%); }
 
 /* =========================
-MODAL — shared
+MODAL
 ========================= */
 
 .modal-overlay{
@@ -583,7 +578,7 @@ MODAL — shared
 }
 
 /* =========================
-RESUME MODAL — special layout
+RESUME MODAL
 ========================= */
 
 .resume-modal-glass{
@@ -608,8 +603,7 @@ RESUME MODAL — special layout
 .resume-embed-wrapper{ flex:1; min-height:0; border-radius:12px; overflow:hidden; }
 .resume-iframe{
   width:100%; height:100%; min-height:500px;
-  border:none; border-radius:12px;
-  background:#f8f9fa;
+  border:none; border-radius:12px; background:#f8f9fa;
 }
 
 /* =========================
@@ -619,16 +613,15 @@ MOBILE LAYOUT
 .mobile-layout{ display:none; }
 
 /* =========================
-MOBILE CHARACTER CANVAS
+MOBILE CHARACTER CANVAS — fixed, centered
 ========================= */
 
 .mob-canvas-wrap{
   position:fixed; top:0; left:50%; transform:translateX(-50%);
-  width:100%; height:45vh; z-index:2;
+  width:100%; height:55vh; z-index:2;
   pointer-events:none;
-  transition:opacity .5s ease;
+  transition:opacity .4s ease;
 }
-.mob-canvas-wrap.faded{ opacity:.15; }
 #mobCharacterCanvas{
   width:100%; height:100%; display:block;
   filter:drop-shadow(0 16px 24px rgba(0,0,0,0.18))
@@ -658,7 +651,7 @@ MOBILE HERO
 .mob-hero-content{
   position:relative; z-index:3; max-width:480px; width:100%;
   text-align:center;
-  padding-top:40vh; /* push content below character */
+  padding-top:48vh;
 }
 
 .mob-eyebrow{
@@ -666,22 +659,18 @@ MOBILE HERO
   text-transform:uppercase; color:var(--indigo); font-weight:700;
   margin-bottom:14px;
 }
-
 .mob-name{
   font-family:'Syne',sans-serif;
   font-size:clamp(2.8rem,12vw,4.5rem);
   font-weight:800; letter-spacing:.02em; line-height:1;
   color:var(--text); margin-bottom:14px;
 }
-
 .mob-tagline{
   font-family:'Syne',sans-serif; font-size:.85rem; font-weight:600;
   color:var(--indigo); margin-bottom:16px; letter-spacing:.04em;
 }
-
 .mob-bio{
-  font-size:.9rem; color:var(--muted); line-height:1.7;
-  margin-bottom:28px;
+  font-size:.9rem; color:var(--muted); line-height:1.7; margin-bottom:28px;
 }
 
 .mob-hero-links{
@@ -698,8 +687,7 @@ MOBILE HERO
   box-shadow:0 4px 16px rgba(0,0,0,.06);
   font-family:'Syne',sans-serif; font-size:.78rem; font-weight:700;
   letter-spacing:.05em; color:#334155; text-decoration:none;
-  transition:all .3s ease;
-  -webkit-tap-highlight-color:transparent;
+  transition:all .3s ease; -webkit-tap-highlight-color:transparent;
 }
 .mob-link-btn svg{ width:15px; height:15px; flex-shrink:0; }
 .mob-link-btn:active{ transform:scale(.96); }
@@ -712,20 +700,30 @@ MOBILE HERO
 .mob-skills{ justify-content:center; }
 
 /* =========================
-MOBILE SECTIONS
+MOBILE SECTIONS — fade in/out with scroll
 ========================= */
 
 .mob-section{
   padding:56px 20px 20px;
   max-width:600px; margin:0 auto;
   position:relative; z-index:3;
+  /* Sections start visible, JS manages transitions */
+  transition:opacity .4s ease, transform .4s ease;
+}
+
+/* JS adds these classes during scroll */
+.mob-section.mob-visible{
+  opacity:1; transform:translateY(0);
+}
+.mob-section.mob-hidden{
+  opacity:0; transform:translateY(20px);
 }
 
 .mob-section-header{ margin-bottom:28px; text-align:center; }
 .mob-section-header h2{ font-size:1.6rem; }
 
 /* =========================
-MOBILE CARDS — experience + achievement (both clickable)
+MOBILE CARDS — experience + achievement (ALL clickable)
 ========================= */
 
 .mob-cards{ display:flex; flex-direction:column; gap:14px; }
@@ -775,16 +773,14 @@ MOBILE PROJECT GRID
   box-shadow:var(--glass-shadow);
   border-radius:18px; padding:20px 20px 20px 26px;
   position:relative; overflow:hidden;
+  cursor:pointer;
   transition:transform .3s ease, box-shadow .3s ease;
   -webkit-tap-highlight-color:transparent;
 }
 .mob-proj-card .label{ color:var(--accent,var(--indigo)); }
 .mob-proj-card:active{ transform:scale(.98); }
 
-.mob-proj-btn{
-  margin-top:4px;
-  background:var(--accent,var(--indigo));
-}
+.mob-proj-btn{ margin-top:4px; background:var(--accent,var(--indigo)); }
 
 /* =========================
 MOBILE CONTACT
@@ -822,7 +818,6 @@ MOBILE FOOTER
 
   .top-nav{ top:16px; right:16px; gap:6px; }
   .nav-btn{ padding:7px 11px; font-size:.68rem; }
-
   .scene-dots{ display:none; }
 
   .summary-panel{ max-width:320px; margin-left:2vw; }
@@ -830,7 +825,6 @@ MOBILE FOOTER
   .achievement-wall{ width:310px; max-width:38vw; }
   .connect-panel{ max-width:360px; }
 
-  /* Project panels closer on tablet */
   .project-panel{ width:170px; }
   .project-panel.left.top    { left:10%;  top:10%; }
   .project-panel.left.middle { left:8%;   top:42%; }
@@ -872,7 +866,6 @@ MOBILE FOOTER
 
   .mobile-layout{ display:block; }
 
-  /* Nav */
   .top-nav{
     top:14px; right:12px; gap:5px;
     position:fixed; z-index:300;
@@ -887,39 +880,36 @@ MOBILE FOOTER
   .scene-dots{ display:none; }
   .scene-label{ display:none; }
 
-  /* Modal: sheet from bottom */
-  .modal-overlay{ padding:12px; align-items:flex-end; }
+  /* Modal: centered on all screens */
+  .modal-overlay{ padding:16px; align-items:center; }
   .modal-glass{
-    width:100%; max-height:90svh;
-    border-radius:20px 20px 0 0;
+    width:min(500px,100%); max-height:85svh;
+    border-radius:20px;
     padding:28px 22px 32px;
   }
 
-  /* Resume modal full screen on mobile */
   .resume-modal-glass{
     width:100%; max-height:95svh;
-    border-radius:20px 20px 0 0;
+    border-radius:20px;
     padding:20px 16px 24px;
   }
   .resume-iframe{ min-height:60vh; }
 
   .mob-proj-grid{ grid-template-columns:1fr; }
 
-  /* Character canvas on mobile */
-  .mob-canvas-wrap{ height:35vh; }
-  .mob-hero-content{ padding-top:32vh; }
+  /* Character canvas sizing */
+  .mob-canvas-wrap{ height:45vh; }
+  .mob-hero-content{ padding-top:42vh; }
 }
 
-/* Very small phones */
 @media(max-width:380px){
   .mob-name{ font-size:2.4rem; }
   .mob-section{ padding:44px 16px 16px; }
   .modal-glass{ padding:22px 16px 28px; }
-  .mob-canvas-wrap{ height:30vh; }
-  .mob-hero-content{ padding-top:28vh; }
+  .mob-canvas-wrap{ height:38vh; }
+  .mob-hero-content{ padding-top:35vh; }
 }
 
-/* iOS safe areas */
 @supports(padding:max(0px)){
   .mob-hero{ padding-top:max(80px, calc(60px + env(safe-area-inset-top))); }
   .modal-glass{ padding-bottom:max(32px, calc(20px + env(safe-area-inset-bottom))); }
