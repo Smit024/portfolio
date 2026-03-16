@@ -1,13 +1,10 @@
 /* =====================================================
    SMIT PATEL PORTFOLIO — script.js
-   Handles:
-   - Desktop canvas + scene system
-   - Mobile canvas + scroll-driven character
-   - Resume modal (center screen with download)
-   - Achievement modal (click to expand)
-   - Contact form → mailto
-   - Scene progress dots + label
-   - Keyboard accessibility
+   v3 fixes:
+   - Entire project panel and experience card clickable
+   - EmailJS for direct email delivery
+   - Mobile: section reveal/hide with character visible between
+   - Achievement title z-index fix
 ===================================================== */
 
 /* =========================
@@ -64,11 +61,11 @@ const PROJECT_DATA = {
     accent: "#f59e0b",
     bg: "linear-gradient(135deg,rgba(245,158,11,0.12) 0%,rgba(255,255,255,0.86) 100%)",
     bullets: [
-      "Researching lightweight on-device AI models for smart glasses focused on making the human-technology connection seamless, natural, and non-intrusive — removing friction from everyday digital interactions.",
+      "Researching lightweight on-device AI models for smart glasses focused on making the human-technology connection seamless, natural, and non-intrusive.",
       "Designing real-time CV pipelines optimized for wearable form factors, enabling context-aware visual assistance such as object recognition and environment description without cloud dependency.",
-      "Exploring multimodal interaction paradigms combining gaze tracking, voice commands, and gesture detection to create an effortless interface that adapts to users rather than requiring them to adapt.",
-      "Prototyping edge inference pipelines with TensorFlow Lite on low-power hardware, targeting sub-50ms latency so AI responses feel immediate and natural throughout the day.",
-      "Investigating privacy-preserving on-device processing architectures so all sensory data stays local — building user trust while delivering the full functionality of an always-on AI companion."
+      "Exploring multimodal interaction paradigms combining gaze tracking, voice commands, and gesture detection to create an effortless interface that adapts to users.",
+      "Prototyping edge inference pipelines with TensorFlow Lite on low-power hardware, targeting sub-50ms latency so AI responses feel immediate and natural.",
+      "Investigating privacy-preserving on-device processing architectures so all sensory data stays local — building user trust while delivering full AI companion functionality."
     ]
   },
   intellectmap: {
@@ -81,8 +78,8 @@ const PROJECT_DATA = {
       "Developed an AI-powered campus discovery platform that visualizes people, clubs, and events through an interactive global and campus map using Plotly-based geospatial visualization.",
       "Implemented a machine learning recommendation engine using TF-IDF vectorization and cosine similarity to match users with relevant peers, communities, and events based on shared interests.",
       "Engineered a full-stack Streamlit application with dynamic filtering, node clustering by domain, and real-time exploration of academic communities across departments.",
-      "Integrated personalized networking message generation using LLM prompting, enabling users to send contextually relevant connection requests to recommended peers with a single click.",
-      "Designed the data layer to ingest and normalize diverse campus data sources — student profiles, club directories, and event feeds — into a unified graph structure powering all discovery features."
+      "Integrated personalized networking message generation using LLM prompting, enabling contextually relevant connection requests with a single click.",
+      "Designed the data layer to ingest and normalize diverse campus data sources into a unified graph structure powering all discovery features."
     ]
   },
   emailassistant: {
@@ -94,9 +91,9 @@ const PROJECT_DATA = {
     bullets: [
       "Built a context-aware email generation assistant that analyzes prior conversation threads and user intent to draft professional, tone-appropriate replies in seconds.",
       "Designed a FastAPI backend that processes email context through an LLM pipeline, extracting key topics, sentiment, and required actions to generate highly relevant draft responses.",
-      "Developed a React frontend with a clean compose interface where users can adjust tone (formal, casual, concise) and review AI-generated drafts before sending — keeping humans in control.",
+      "Developed a React frontend with a clean compose interface where users can adjust tone and review AI-generated drafts before sending — keeping humans in control.",
       "Implemented thread summarization that condenses long email chains into structured briefings, helping users catch up on complex conversations without reading every message.",
-      "Engineered prompt templates with few-shot examples calibrated for common professional scenarios — follow-ups, meeting requests, status updates — ensuring consistent output quality."
+      "Engineered prompt templates with few-shot examples calibrated for common professional scenarios — follow-ups, meeting requests, status updates."
     ]
   }
 };
@@ -118,7 +115,7 @@ UTILITY
 ========================= */
 
 const isMobile = () => window.innerWidth < 768;
-const CONTACT_EMAIL = "psmit9258@gmail.com";
+const WEB3FORMS_KEY = "352c5f2c-a4a4-4487-9544-75812a6999b9";
 
 /* =========================
 SCENE MANAGEMENT
@@ -164,7 +161,6 @@ function updateSceneLabel(index){
   if(el) el.textContent = SCENE_LABELS[index] || "";
 }
 
-// Dot click navigation
 document.querySelectorAll(".dot").forEach(dot=>{
   dot.addEventListener("click", ()=>{
     const idx = parseInt(dot.dataset.scene, 10);
@@ -226,7 +222,7 @@ CANVAS SETUP — Mobile
 const mobCanvas = document.getElementById("mobCharacterCanvas");
 const mobCtx    = mobCanvas ? mobCanvas.getContext("2d") : null;
 let mobFramePos = 0;
-let mobTargetFrame = 80; // default: show character facing forward
+let mobTargetFrame = 80;
 
 function resizeMobCanvas(){
   if(!mobCanvas || !mobCtx) return;
@@ -249,39 +245,92 @@ function renderMobFrame(index){
   if(!img || !img.complete || !img.naturalWidth) return;
   const cw = mobCanvas.clientWidth, ch = mobCanvas.clientHeight;
   const ir = img.naturalWidth / img.naturalHeight;
-  const cr = cw / ch;
-  let dw, dh;
-  if(ir > cr){ dw = cw * 0.8; dh = dw / ir; }
-  else       { dh = ch * 0.9; dw = dh * ir; }
-  mobCtx.clearRect(0,0,mobCanvas.width,mobCanvas.height);
+  let dh = ch * 0.92;
+  let dw = dh * ir;
+  if(dw > cw * 0.85){ dw = cw * 0.85; dh = dw / ir; }
+  mobCtx.clearRect(0,0,mobCanvas.width, mobCanvas.height);
   mobCtx.drawImage(img,(cw-dw)/2,(ch-dh)/2,dw,dh);
 }
 
 function animateMob(){
-  if(!isMobile()) { requestAnimationFrame(animateMob); return; }
   mobFramePos += (mobTargetFrame - mobFramePos) * 0.1;
-  renderMobFrame(Math.floor(mobFramePos));
+  renderMobFrame(Math.floor(Math.max(0, Math.min(mobFramePos, FRAME_COUNT-1))));
   requestAnimationFrame(animateMob);
 }
 
-// Scroll-driven mobile character frame: map scroll position to frames
+/* =========================
+MOBILE SCROLL — section-aware character + content reveal
+Each section: while scrolling between sections, character is fully visible.
+When scroll stops at a section, content fades in ON TOP of character.
+========================= */
+
 function updateMobScroll(){
   if(!isMobile()) return;
   const scrollY = window.scrollY;
   const docH = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = Math.min(scrollY / docH, 1);
-  // Map scroll to frame range 1–354
+  const progress = Math.min(Math.max(scrollY / docH, 0), 1);
+
+  // Map scroll to character frames
   mobTargetFrame = Math.floor(progress * 340) + 4;
 
-  // Fade canvas when content sections are in view
-  const wrap = document.getElementById("mobCanvasWrap");
-  if(wrap){
-    // Fade character slightly after scrolling past hero
-    const heroH = document.getElementById("mobHero")?.offsetHeight || window.innerHeight;
-    if(scrollY > heroH * 0.6){
-      wrap.classList.add("faded");
+  // Get all mobile sections
+  const sections = document.querySelectorAll(".mob-section, .mob-hero");
+  const viewH = window.innerHeight;
+  const viewCenter = scrollY + viewH / 2;
+
+  let anyTransitioning = false;
+
+  sections.forEach(sec => {
+    const top = sec.offsetTop;
+    const bot = top + sec.offsetHeight;
+    const secCenter = top + sec.offsetHeight / 2;
+    const dist = Math.abs(viewCenter - secCenter);
+    const threshold = viewH * 0.35;
+
+    if(dist < threshold){
+      // Section is centered — show content
+      sec.classList.add("mob-visible");
+      sec.classList.remove("mob-hidden");
+    } else if(dist < viewH * 0.8){
+      // Transitioning — hide content, character visible
+      sec.classList.remove("mob-visible");
+      sec.classList.add("mob-hidden");
+      anyTransitioning = true;
     } else {
-      wrap.classList.remove("faded");
+      sec.classList.remove("mob-visible");
+      sec.classList.remove("mob-hidden");
+    }
+  });
+
+  // Character canvas opacity: full when transitioning, semi when content shows
+  const wrap = document.getElementById("mobCanvasWrap");
+  if(!wrap) return;
+
+  // Check if we're past hero section
+  const heroEl = document.getElementById("mobHero");
+  const heroBottom = heroEl ? heroEl.offsetTop + heroEl.offsetHeight : viewH;
+
+  if(scrollY < heroBottom * 0.4){
+    // In hero area — character full visible
+    wrap.style.opacity = "1";
+  } else {
+    // After hero — character visible between sections, faded when content shows
+    // Find the nearest section center
+    let nearestDist = Infinity;
+    sections.forEach(sec => {
+      if(sec.classList.contains("mob-hero")) return;
+      const secCenter = sec.offsetTop + sec.offsetHeight / 2;
+      const d = Math.abs(viewCenter - secCenter);
+      if(d < nearestDist) nearestDist = d;
+    });
+
+    const viewThird = viewH * 0.3;
+    if(nearestDist < viewThird){
+      // Content section is centered — fade character
+      wrap.style.opacity = "0.12";
+    } else {
+      // Between sections — character prominent
+      wrap.style.opacity = "0.85";
     }
   }
 }
@@ -341,15 +390,12 @@ function openModal(overlayId, config){
   if(!overlay) return;
   const glass = overlay.querySelector(".modal-glass");
 
-  // Apply accent colors
   if(config.accent){
     glass.style.borderTopColor = config.accent;
     overlay.querySelectorAll(".modal-accent").forEach(el=> el.style.color = config.accent);
   }
-  // Apply background tint
   if(config.bg) glass.style.background = config.bg;
 
-  // Populate fields
   Object.entries(config).forEach(([key, val])=>{
     if(key === "accent" || key === "bg") return;
     const el = overlay.querySelector(`[data-field="${key}"]`);
@@ -376,34 +422,28 @@ function closeModal(overlayId){
   document.body.style.overflow = "";
 }
 
-// Close buttons (works for all modals including resume + achievement)
 document.querySelectorAll(".modal-close").forEach(btn=>{
   btn.addEventListener("click",()=> closeModal(btn.closest(".modal-overlay").id));
 });
 
-// Click outside
 document.querySelectorAll(".modal-overlay").forEach(overlay=>{
   overlay.addEventListener("click", e=>{ if(e.target===overlay) closeModal(overlay.id); });
 });
 
-// Escape key
 document.addEventListener("keydown", e=>{
   if(e.key==="Escape"){
-    closeModal("expModal");
-    closeModal("projModal");
-    closeModal("achModal");
-    closeModal("resumeModal");
+    closeModal("expModal"); closeModal("projModal");
+    closeModal("achModal"); closeModal("resumeModal");
   }
 });
 
 /* =========================
-RESUME MODAL — opens center screen with PDF + download
+RESUME MODAL
 ========================= */
 
 const resumeBtn = document.getElementById("resumeNavBtn");
 if(resumeBtn){
   resumeBtn.addEventListener("click", ()=>{
-    // Lazy-load iframe src to avoid loading PDF on page load
     const iframe = document.getElementById("resumeIframe");
     if(iframe && !iframe.src.includes("Resume.pdf")){
       iframe.src = "Resume.pdf";
@@ -418,8 +458,8 @@ if(resumeBtn){
 }
 
 /* =========================
-EXPERIENCE CARDS — EVENT DELEGATION
-Works for both desktop (.exp-frame) and mobile (.mob-exp-card)
+EXPERIENCE CARDS — click ANYWHERE on card opens modal
+Event delegation on parent containers
 ========================= */
 
 function handleExpClick(el){
@@ -433,23 +473,41 @@ function handleExpClick(el){
   });
 }
 
-// Desktop scene2
+// Desktop scene2 — click anywhere on .exp-frame
 const s2 = document.getElementById("scene2");
 if(s2){
-  s2.addEventListener("click",  e=>{ const f=e.target.closest(".exp-frame");    if(f) handleExpClick(f); });
-  s2.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ const f=e.target.closest(".exp-frame"); if(f) handleExpClick(f); } });
+  s2.addEventListener("click", e=>{
+    const f = e.target.closest(".exp-frame");
+    if(f) handleExpClick(f);
+  });
+  s2.addEventListener("keydown", e=>{
+    if(e.key==="Enter"||e.key===" "){
+      const f = e.target.closest(".exp-frame");
+      if(f){ e.preventDefault(); handleExpClick(f); }
+    }
+  });
 }
 
-// Mobile experience cards
-const mobCards = document.querySelector(".mob-section .mob-cards");
-if(mobCards){
-  mobCards.addEventListener("click",  e=>{ const f=e.target.closest(".mob-exp-card"); if(f) handleExpClick(f); });
-  mobCards.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ const f=e.target.closest(".mob-exp-card"); if(f) handleExpClick(f); } });
-}
+// Mobile experience cards — delegate on ALL .mob-cards containers
+document.querySelectorAll(".mob-cards").forEach(container=>{
+  container.addEventListener("click", e=>{
+    const exp = e.target.closest(".mob-exp-card");
+    if(exp){ handleExpClick(exp); return; }
+    const ach = e.target.closest(".mob-ach-card");
+    if(ach) handleAchClick(ach);
+  });
+  container.addEventListener("keydown", e=>{
+    if(e.key==="Enter"||e.key===" "){
+      const exp = e.target.closest(".mob-exp-card");
+      if(exp){ e.preventDefault(); handleExpClick(exp); return; }
+      const ach = e.target.closest(".mob-ach-card");
+      if(ach){ e.preventDefault(); handleAchClick(ach); }
+    }
+  });
+});
 
 /* =========================
-ACHIEVEMENT CARDS — EVENT DELEGATION (NEW: clickable with modal)
-Works for desktop (.ach-frame) and mobile (.mob-ach-card)
+ACHIEVEMENT CARDS — click anywhere on card opens modal
 ========================= */
 
 function handleAchClick(el){
@@ -465,56 +523,57 @@ function handleAchClick(el){
 // Desktop scene4
 const s4 = document.getElementById("scene4");
 if(s4){
-  s4.addEventListener("click",  e=>{ const f=e.target.closest(".ach-frame"); if(f) handleAchClick(f); });
-  s4.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ const f=e.target.closest(".ach-frame"); if(f) handleAchClick(f); } });
-}
-
-// Mobile achievement cards
-document.querySelectorAll(".mob-cards").forEach(container=>{
-  container.addEventListener("click", e=>{
-    const ach = e.target.closest(".mob-ach-card");
-    if(ach) handleAchClick(ach);
+  s4.addEventListener("click", e=>{
+    const f = e.target.closest(".ach-frame");
+    if(f) handleAchClick(f);
   });
-  container.addEventListener("keydown", e=>{
+  s4.addEventListener("keydown", e=>{
     if(e.key==="Enter"||e.key===" "){
-      const ach = e.target.closest(".mob-ach-card");
-      if(ach) handleAchClick(ach);
+      const f = e.target.closest(".ach-frame");
+      if(f){ e.preventDefault(); handleAchClick(f); }
     }
   });
-});
+}
 
 /* =========================
-PROJECT BUTTONS — EVENT DELEGATION
+PROJECT PANELS — click ANYWHERE on panel opens modal
+(removed dependency on .view-project-btn only)
 ========================= */
 
 function handleProjectClick(key){
   const d = PROJECT_DATA[key];
   if(!d) return;
   openModal("projModal",{
-    accent:  d.accent,
-    bg:      d.bg,
-    label:   d.label,
-    title:   d.title,
-    stack:   d.stack,
-    bullets: d.bullets
+    accent: d.accent, bg: d.bg, label: d.label,
+    title: d.title, stack: d.stack, bullets: d.bullets
   });
 }
 
-// Desktop scene3
+// Desktop scene3 — click on panel OR button
 const s3 = document.getElementById("scene3");
 if(s3){
   s3.addEventListener("click", e=>{
+    // Check button first
     const btn = e.target.closest(".view-project-btn");
-    if(btn){ e.stopPropagation(); handleProjectClick(btn.dataset.project); }
+    if(btn){ e.stopPropagation(); handleProjectClick(btn.dataset.project); return; }
+    // Then check panel itself
+    const panel = e.target.closest(".project-panel");
+    if(panel) handleProjectClick(panel.dataset.project);
   });
 }
 
-// Mobile project grid
+// Mobile project grid — click on card OR button
 const mobProjGrid = document.querySelector(".mob-proj-grid");
 if(mobProjGrid){
   mobProjGrid.addEventListener("click", e=>{
     const btn = e.target.closest(".view-project-btn");
-    if(btn){ e.stopPropagation(); handleProjectClick(btn.dataset.project); }
+    if(btn){ e.stopPropagation(); handleProjectClick(btn.dataset.project); return; }
+    const card = e.target.closest(".mob-proj-card");
+    if(card){
+      // Find the project key from the button inside or from a data attribute
+      const projBtn = card.querySelector(".view-project-btn");
+      if(projBtn) handleProjectClick(projBtn.dataset.project);
+    }
   });
 }
 
@@ -528,11 +587,12 @@ document.querySelectorAll(".project-panel").forEach(panel=>{
 });
 
 /* =========================
-FORM HANDLING — mailto integration
+FORM HANDLING — Web3Forms direct delivery
+Messages go straight to your inbox, no redirects
 ========================= */
 
 function handleFormSubmit(form){
-  form.addEventListener("submit", e=>{
+  form.addEventListener("submit", async e=>{
     e.preventDefault();
 
     const name    = form.querySelector('[name="name"]').value.trim();
@@ -541,26 +601,52 @@ function handleFormSubmit(form){
 
     if(!name || !email || !message) return;
 
-    // Build mailto link
-    const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
-    const body    = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    );
-    const mailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-
-    // Open mail client
-    window.location.href = mailtoUrl;
-
-    // Visual feedback
     const btn = form.querySelector(".connect-btn");
     const orig = btn.textContent;
-    btn.textContent = "Opening Mail...";
-    btn.style.background = "#10b981";
-    setTimeout(()=>{
-      btn.textContent = orig;
-      btn.style.background = "";
-      form.reset();
-    }, 2500);
+    btn.textContent = "Sending...";
+    btn.disabled = true;
+
+    const formData = new FormData();
+    formData.append("access_key", WEB3FORMS_KEY);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("message", message);
+    formData.append("subject", "Portfolio Contact from " + name);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+
+      if(response.ok && data.success){
+        btn.textContent = "Sent!";
+        btn.style.background = "#10b981";
+        form.reset();
+        setTimeout(()=>{
+          btn.textContent = orig;
+          btn.style.background = "";
+          btn.disabled = false;
+        }, 3000);
+      } else {
+        btn.textContent = "Failed — try again";
+        btn.style.background = "#ef4444";
+        setTimeout(()=>{
+          btn.textContent = orig;
+          btn.style.background = "";
+          btn.disabled = false;
+        }, 3000);
+      }
+    } catch(err){
+      btn.textContent = "Failed — try again";
+      btn.style.background = "#ef4444";
+      setTimeout(()=>{
+        btn.textContent = orig;
+        btn.style.background = "";
+        btn.disabled = false;
+      }, 3000);
+    }
   });
 }
 
@@ -580,7 +666,7 @@ window.addEventListener("wheel", e=>{
 },{passive:true});
 
 /* =========================
-TOUCH SWIPE (desktop/tablet only — mobile uses normal scroll)
+TOUCH SWIPE (desktop/tablet only)
 ========================= */
 
 let touchStartY = 0, touchStartX = 0;
@@ -616,9 +702,7 @@ document.addEventListener("keydown", e=>{
 MOBILE SCROLL LISTENER
 ========================= */
 
-if(isMobile()){
-  window.addEventListener("scroll", updateMobScroll, {passive:true});
-}
+window.addEventListener("scroll", updateMobScroll, {passive:true});
 
 /* =========================
 INIT
@@ -629,20 +713,17 @@ window.addEventListener("load", ()=>{
   if(loader) loader.style.display = "none";
 
   if(isMobile()){
-    // Mobile: show nav, start mobile canvas animation
     document.body.classList.add("nav-visible");
     resizeMobCanvas();
     animateMob();
     updateMobScroll();
   } else {
-    // Desktop: run full intro animation
     renderFrame(0);
     typeName();
     animate();
   }
 });
 
-// Handle resize crossing breakpoint
 let lastMobile = isMobile();
 window.addEventListener("resize", ()=>{
   const nowMobile = isMobile();
@@ -651,9 +732,7 @@ window.addEventListener("resize", ()=>{
     if(nowMobile){
       document.body.classList.add("nav-visible");
       resizeMobCanvas();
-      // Start mobile animation if not already running
       animateMob();
-      window.addEventListener("scroll", updateMobScroll, {passive:true});
     } else if(!introFinished){
       renderFrame(0);
       if(!document.getElementById("introName").textContent){
