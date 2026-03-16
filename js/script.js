@@ -394,7 +394,6 @@ function openModal(overlayId, config){
     glass.style.borderTopColor = config.accent;
     overlay.querySelectorAll(".modal-accent").forEach(el=> el.style.color = config.accent);
   }
-  if(config.bg) glass.style.background = config.bg;
 
   Object.entries(config).forEach(([key, val])=>{
     if(key === "accent" || key === "bg") return;
