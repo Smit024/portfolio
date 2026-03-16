@@ -446,7 +446,7 @@ if(resumeBtn){
   resumeBtn.addEventListener("click", ()=>{
     const iframe = document.getElementById("resumeIframe");
     if(iframe && !iframe.src.includes("Resume.pdf")){
-      iframe.src = "Resume.pdf";
+      iframe.src = "Resume.pdf#toolbar=0&navpanes=0&scrollbar=1";
     }
     const overlay = document.getElementById("resumeModal");
     if(overlay){
