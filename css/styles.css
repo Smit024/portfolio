@@ -623,14 +623,58 @@ MOBILE LAYOUT
 .mobile-layout{ display:none; }
 
 /* =========================
-MOBILE CHARACTER CANVAS — fixed, centered
+MOBILE INTRO — typing animation
+========================= */
+
+.mob-intro{
+  position:fixed; inset:0; z-index:100;
+  display:flex; justify-content:center; align-items:center;
+  background:var(--bg);
+  transition:opacity .8s ease;
+  pointer-events:auto;
+}
+.mob-intro.fade-out{
+  opacity:0; pointer-events:none;
+}
+.mob-intro-name{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.5rem,10vw,4rem);
+  font-weight:800; letter-spacing:.04em;
+  color:var(--text);
+  white-space:nowrap;
+}
+/* Blinking cursor effect */
+.mob-intro-name::after{
+  content:'|';
+  animation:blink .6s step-end infinite;
+  color:var(--indigo);
+  font-weight:300;
+  margin-left:2px;
+}
+.mob-intro-name.done::after{
+  display:none;
+}
+@keyframes blink{
+  50%{ opacity:0; }
+}
+
+/* Hide mobile content until intro finishes */
+.mobile-layout.intro-active .mob-canvas-wrap,
+.mobile-layout.intro-active .mob-hero,
+.mobile-layout.intro-active .mob-section,
+.mobile-layout.intro-active .mob-footer{
+  opacity:0;
+}
+
+/* =========================
+MOBILE CHARACTER CANVAS — full screen, centered, behind everything
 ========================= */
 
 .mob-canvas-wrap{
-  position:fixed; top:0; left:50%; transform:translateX(-50%);
-  width:100%; height:55vh; z-index:2;
+  position:fixed; top:0; left:0;
+  width:100%; height:100vh; z-index:1;
   pointer-events:none;
-  transition:opacity .4s ease;
+  opacity:0.30;
 }
 #mobCharacterCanvas{
   width:100%; height:100%; display:block;
@@ -644,7 +688,7 @@ MOBILE HERO
 
 .mob-hero{
   position:relative; min-height:100svh;
-  display:flex; align-items:flex-end; justify-content:center;
+  display:flex; align-items:center; justify-content:center;
   padding:80px 24px 60px; overflow:hidden;
 }
 
@@ -661,7 +705,6 @@ MOBILE HERO
 .mob-hero-content{
   position:relative; z-index:3; max-width:480px; width:100%;
   text-align:center;
-  padding-top:48vh;
 }
 
 .mob-eyebrow{
@@ -710,23 +753,13 @@ MOBILE HERO
 .mob-skills{ justify-content:center; }
 
 /* =========================
-MOBILE SECTIONS — fade in/out with scroll
+MOBILE SECTIONS
 ========================= */
 
 .mob-section{
   padding:56px 20px 20px;
   max-width:600px; margin:0 auto;
   position:relative; z-index:3;
-  /* Sections start visible, JS manages transitions */
-  transition:opacity .4s ease, transform .4s ease;
-}
-
-/* JS adds these classes during scroll */
-.mob-section.mob-visible{
-  opacity:1; transform:translateY(0);
-}
-.mob-section.mob-hidden{
-  opacity:0; transform:translateY(20px);
 }
 
 .mob-section-header{ margin-bottom:28px; text-align:center; }
@@ -906,18 +939,12 @@ MOBILE FOOTER
   .resume-iframe{ min-height:60vh; }
 
   .mob-proj-grid{ grid-template-columns:1fr; }
-
-  /* Character canvas sizing */
-  .mob-canvas-wrap{ height:45vh; }
-  .mob-hero-content{ padding-top:42vh; }
 }
 
 @media(max-width:380px){
   .mob-name{ font-size:2.4rem; }
   .mob-section{ padding:44px 16px 16px; }
   .modal-glass{ padding:22px 16px 28px; }
-  .mob-canvas-wrap{ height:38vh; }
-  .mob-hero-content{ padding-top:35vh; }
 }
 
 @supports(padding:max(0px)){
